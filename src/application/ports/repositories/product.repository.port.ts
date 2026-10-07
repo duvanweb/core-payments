@@ -6,4 +6,5 @@ export const PRODUCT_REPOSITORY = Symbol('PRODUCT_REPOSITORY');
 
 export interface ProductRepositoryPort {
   findAll(): ResultAsync<Product[], DomainError>;
+  findById(id: string): ResultAsync<Product | null, DomainError>;
 }

@@ -35,3 +35,9 @@ export class ProductRepositoryError extends DomainError {
     super('PRODUCT_REPOSITORY_ERROR', message);
   }
 }
+
+export class ProductNotFoundError extends DomainError {
+  constructor(message: string = 'Product not found') {
+    super('PRODUCT_NOT_FOUND', message);
+  }
+}

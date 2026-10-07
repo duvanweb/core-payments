@@ -73,4 +73,27 @@ describe('Products (e2e)', () => {
     const titles = body.map((p) => p.title).sort();
     expect(titles).toEqual(['Test Product A', 'Test Product B', 'Test Product C']);
   });
+
+  it('GET /api/products/:id → 200 with the matching product', async () => {
+    const product = await prisma.product.findFirst();
+    expect(product).not.toBeNull();
+
+    const response = await request(app.getHttpServer())
+      .get(`/api/products/${product!.id}`)
+      .expect(200);
+
+    const body = response.body as ProductResponseBody;
+    expect(body.id).toBe(product!.id);
+    expect(body.title).toBe(product!.title);
+    expect(body.description).toBe(product!.description);
+    expect(body.price).toBe(Number(product!.price));
+    expect(body.imageUrl).toMatch(/^https?:\/\/.+\/images\/.+$/);
+    expect(body.stock).toBe(product!.stock);
+  });
+
+  it('GET /api/products/:id → 404 when product does not exist', async () => {
+    await request(app.getHttpServer())
+      .get('/api/products/nonexistent-id')
+      .expect(404);
+  });
 });
