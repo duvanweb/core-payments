@@ -7,6 +7,7 @@ import { AppModule } from '../src/app.module';
 
 interface ProductResponseBody {
   id: string;
+  title: string;
   description: string;
   price: number;
   imageUrl: string;
@@ -14,9 +15,9 @@ interface ProductResponseBody {
 }
 
 const testProducts = [
-  { description: 'Test Product A', price: 10.0, imageUrl: 'https://example.com/a.png', stock: 5 },
-  { description: 'Test Product B', price: 20.5, imageUrl: 'https://example.com/b.png', stock: 10 },
-  { description: 'Test Product C', price: 30.99, imageUrl: 'https://example.com/c.png', stock: 0 },
+  { title: 'Test Product A', description: 'Desc A', price: 10.0, image: 'test-a.jpg', stock: 5 },
+  { title: 'Test Product B', description: 'Desc B', price: 20.5, image: 'test-b.jpg', stock: 10 },
+  { title: 'Test Product C', description: 'Desc C', price: 30.99, image: 'test-c.jpg', stock: 0 },
 ];
 
 describe('Products (e2e)', () => {
@@ -54,20 +55,22 @@ describe('Products (e2e)', () => {
 
     for (const product of body) {
       expect(typeof product.id).toBe('string');
+      expect(typeof product.title).toBe('string');
       expect(typeof product.description).toBe('string');
       expect(typeof product.price).toBe('number');
       expect(typeof product.imageUrl).toBe('string');
+      expect(product.imageUrl).toMatch(/^https?:\/\/.+\/images\/.+$/);
       expect(typeof product.stock).toBe('number');
     }
   });
 
-  it('returns products with the expected descriptions', async () => {
+  it('returns products with the expected titles', async () => {
     const response = await request(app.getHttpServer())
       .get('/api/products')
       .expect(200);
 
     const body = response.body as ProductResponseBody[];
-    const descriptions = body.map((p) => p.description).sort();
-    expect(descriptions).toEqual(['Test Product A', 'Test Product B', 'Test Product C']);
+    const titles = body.map((p) => p.title).sort();
+    expect(titles).toEqual(['Test Product A', 'Test Product B', 'Test Product C']);
   });
 });

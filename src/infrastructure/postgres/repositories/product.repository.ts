@@ -28,9 +28,10 @@ export class PrismaProductRepository implements ProductRepositoryPort {
 function toDomain(row: PrismaProduct): Result<Product, DomainError> {
   return Product.create({
     id: row.id,
+    title: row.title,
     description: row.description,
     price: Number(row.price),
-    imageUrl: row.imageUrl,
+    image: row.image,
     stock: row.stock,
   });
 }

@@ -3,9 +3,10 @@ import { Product } from './product';
 
 const validProps = {
   id: 'prod-001',
-  description: 'Premium coffee beans',
+  title: 'Premium coffee beans',
+  description: 'Premium coffee beans description',
   price: 29.99,
-  imageUrl: 'https://example.com/coffee.png',
+  image: 'coffee-1kg.jpg',
   stock: 42,
 };
 
@@ -16,13 +17,19 @@ describe('Product', () => {
     result.match(
       (product) => {
         expect(product.id).toBe('prod-001');
-        expect(product.description.value).toBe('Premium coffee beans');
+        expect(product.title.value).toBe('Premium coffee beans');
+        expect(product.description.value).toBe('Premium coffee beans description');
         expect(product.price.value).toBe(29.99);
-        expect(product.imageUrl.value).toBe('https://example.com/coffee.png');
+        expect(product.image.value).toBe('coffee-1kg.jpg');
         expect(product.stock.value).toBe(42);
       },
       () => fail('Expected Ok'),
     );
+  });
+
+  it('returns Err when title is empty', () => {
+    const result = Product.create({ ...validProps, title: '' });
+    expect(result.isErr()).toBe(true);
   });
 
   it('returns Err when description is empty', () => {
@@ -35,8 +42,8 @@ describe('Product', () => {
     expect(result.isErr()).toBe(true);
   });
 
-  it('returns Err when imageUrl is invalid', () => {
-    const result = Product.create({ ...validProps, imageUrl: 'not-a-url' });
+  it('returns Err when image is empty', () => {
+    const result = Product.create({ ...validProps, image: '' });
     expect(result.isErr()).toBe(true);
   });
 

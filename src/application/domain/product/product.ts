@@ -1,16 +1,18 @@
 import { Entity } from '@application/domain/shared/entity';
 import { Result } from '@application/domain/shared/result';
 import { DomainError } from '@application/domain/shared/domain-error';
+import { ProductTitle } from './product-title.vo';
 import { ProductDescription } from './product-description.vo';
 import { ProductPrice } from './product-price.vo';
-import { ProductImageUrl } from './product-image-url.vo';
+import { ProductImage } from './product-image.vo';
 import { Stock } from './stock.vo';
 
 export interface ProductProps {
   id: string;
+  title: string;
   description: string;
   price: number;
-  imageUrl: string;
+  image: string;
   stock: number;
 }
 
@@ -21,28 +23,32 @@ export interface ProductProps {
 export class Product extends Entity<string> {
   constructor(
     id: string,
+    readonly title: ProductTitle,
     readonly description: ProductDescription,
     readonly price: ProductPrice,
-    readonly imageUrl: ProductImageUrl,
+    readonly image: ProductImage,
     readonly stock: Stock,
   ) {
     super(id);
   }
 
   static create(props: ProductProps): Result<Product, DomainError> {
-    return ProductDescription.create(props.description)
-      .andThen((description) =>
-        ProductPrice.create(props.price).map((price) => ({ description, price })),
+    return ProductTitle.create(props.title)
+      .andThen((title) =>
+        ProductDescription.create(props.description).map((description) => ({ title, description })),
       )
-      .andThen(({ description, price }) =>
-        ProductImageUrl.create(props.imageUrl).map((imageUrl) => ({ description, price, imageUrl })),
+      .andThen(({ title, description }) =>
+        ProductPrice.create(props.price).map((price) => ({ title, description, price })),
       )
-      .andThen(({ description, price, imageUrl }) =>
-        Stock.create(props.stock).map((stock) => ({ description, price, imageUrl, stock })),
+      .andThen(({ title, description, price }) =>
+        ProductImage.create(props.image).map((image) => ({ title, description, price, image })),
+      )
+      .andThen(({ title, description, price, image }) =>
+        Stock.create(props.stock).map((stock) => ({ title, description, price, image, stock })),
       )
       .map(
-        ({ description, price, imageUrl, stock }) =>
-          new Product(props.id, description, price, imageUrl, stock),
+        ({ title, description, price, image, stock }) =>
+          new Product(props.id, title, description, price, image, stock),
       );
   }
 }

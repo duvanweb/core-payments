@@ -12,9 +12,15 @@ export class InvalidProductPriceError extends DomainError {
   }
 }
 
-export class InvalidProductImageUrlError extends DomainError {
-  constructor(message: string = 'Invalid product image URL') {
-    super('INVALID_PRODUCT_IMAGE_URL', message);
+export class InvalidProductImageError extends DomainError {
+  constructor(message: string = 'Invalid product image') {
+    super('INVALID_PRODUCT_IMAGE', message);
+  }
+}
+
+export class InvalidProductTitleError extends DomainError {
+  constructor(message: string = 'Invalid product title') {
+    super('INVALID_PRODUCT_TITLE', message);
   }
 }
 

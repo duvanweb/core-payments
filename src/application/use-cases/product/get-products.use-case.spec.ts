@@ -19,9 +19,10 @@ class FakeProductRepository implements ProductRepositoryPort {
 function makeProduct(): Product {
   const result = Product.create({
     id: 'prod-001',
-    description: 'Premium coffee beans',
+    title: 'Premium coffee beans',
+    description: 'Premium coffee beans description',
     price: 29.99,
-    imageUrl: 'https://example.com/coffee.png',
+    image: 'coffee-1kg.jpg',
     stock: 42,
   });
   return result.match(

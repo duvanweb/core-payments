@@ -12,9 +12,10 @@ generator client {
 
 model Product {
   id          String   @id @default(uuid())
+  title       String
   description String
   price       Decimal  @db.Decimal(10, 2)
-  imageUrl    String
+  image       String
   stock       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
