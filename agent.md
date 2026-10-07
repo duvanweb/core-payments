@@ -2,7 +2,7 @@
 
 ## 1. Propósito y Stack
 
-Backend de pagos construido con **NestJS 12**, **TypeScript strict**, **pnpm**, **vitest** y **ESLint**.
+Backend de pagos construido con **NestJS 12**, **TypeScript strict**, **pnpm**, **Jest** y **ESLint**.
 Persistencia: **Postgres** + **Prisma ORM** (wired via `PrismaService`/`PrismaModule`; ver `infrastructure/postgres/`).
 
 ## 2. Arquitectura Hexagonal Global
