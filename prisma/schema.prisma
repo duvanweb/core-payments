@@ -1,0 +1,11 @@
+// Prisma schema for core-payments.
+// Datasource and generator are wired; the first business model will be added here.
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
