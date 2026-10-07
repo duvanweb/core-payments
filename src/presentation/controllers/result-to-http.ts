@@ -17,6 +17,8 @@ export function resultToHttp(error: DomainError): HttpException {
 
 function mapErrorToHttpStatus(error: DomainError): HttpStatus {
   switch (error.code) {
+    case 'PRODUCT_NOT_FOUND':
+      return HttpStatus.NOT_FOUND;
     default:
       return HttpStatus.INTERNAL_SERVER_ERROR;
   }

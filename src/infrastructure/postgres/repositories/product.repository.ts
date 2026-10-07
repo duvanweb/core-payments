@@ -23,6 +23,16 @@ export class PrismaProductRepository implements ProductRepositoryPort {
       return ok(products);
     });
   }
+
+  findById(id: string): ResultAsync<Product | null, DomainError> {
+    return ResultAsync.fromPromise(
+      this.prisma.product.findUnique({ where: { id } }),
+      (e) => new ProductRepositoryError(`Failed to fetch product: ${String(e)}`),
+    ).andThen((row): Result<Product | null, DomainError> => {
+      if (row === null) return ok(null);
+      return toDomain(row);
+    });
+  }
 }
 
 function toDomain(row: PrismaProduct): Result<Product, DomainError> {
