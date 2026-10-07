@@ -3,7 +3,7 @@
 ## 1. Propósito y Stack
 
 Backend de pagos construido con **NestJS 12**, **TypeScript strict**, **pnpm**, **vitest** y **ESLint**.
-Persistencia planificada: **Postgres** (ORM pendiente de integración; solo existe la carpeta `infrastructure/postgres/`).
+Persistencia: **Postgres** + **Prisma ORM** (wired via `PrismaService`/`PrismaModule`; ver `infrastructure/postgres/`).
 
 ## 2. Arquitectura Hexagonal Global
 
@@ -125,3 +125,21 @@ execute(input: Input): ResultAsync<Output, DomainError> {
 - ❌ Exponer entidades de dominio en respuestas HTTP.
 - ❌ Usar `@Injectable()` en use cases o repositorios (se registran con `useFactory` / tokens).
 - ❌ Crear ORM entities en `domain/` (van en `infrastructure/`).
+
+## 11. Flujo de Git (rama → commits → PR)
+
+- `main` = producción; `develop` = integración. ❌ Nunca commitear directo a `main` ni `develop`; todo cambio va por PR.
+- Ramas desde `develop` actualizada: `feat/<desc>`, `fix/<desc>`, `chore/<desc>`, `docs/<desc>`.
+- Commits convencionales: `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, `test:`
+  — imperativo, minúscula, sin punto final. Ej: `feat: add payment model`.
+- Commits atómicos: un propósito por commit.
+
+Flujo:
+1. `git checkout develop && git pull`
+2. `git checkout -b feat/<desc>`
+3. Commits atómicos
+4. `git push -u origin feat/<desc>`
+5. `gh pr create --base develop --title "<tipo>: <desc>" --body "<qué/cómo/verificación>"`
+6. `gh pr checks` → `gh pr merge --squash --delete-branch`
+
+Útil: `gh pr list`, `gh pr view --web`, `gh pr checkout <n>`, `gh pr edit`.
