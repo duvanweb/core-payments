@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest';
 import { ProductTitle } from './product-title.vo';
 
 describe('ProductTitle', () => {

@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest';
 import { GetProductByIdUseCase } from './get-product-by-id.use-case';
 import { ProductRepositoryPort } from '@application/ports/repositories/product.repository.port';
 import { Product } from '@application/domain/product/product';
