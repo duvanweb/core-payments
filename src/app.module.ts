@@ -5,6 +5,7 @@ import { join } from 'path';
 import { HealthModule } from '@presentation/modules/health.module';
 import { PrismaModule } from '@presentation/modules/prisma.module';
 import { ProductModule } from '@presentation/modules/product.module';
+import { TransactionModule } from '@presentation/modules/transaction.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ProductModule } from '@presentation/modules/product.module';
     PrismaModule,
     HealthModule,
     ProductModule,
+    TransactionModule,
   ],
 })
 export class AppModule {}

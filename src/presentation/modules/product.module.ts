@@ -30,5 +30,6 @@ import { ProductController } from '@presentation/controllers/product.controller'
       inject: [PRODUCT_REPOSITORY],
     },
   ],
+  exports: [PRODUCT_REPOSITORY],
 })
 export class ProductModule {}
