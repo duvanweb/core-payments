@@ -38,6 +38,12 @@ function mapErrorToHttpStatus(error: DomainError): HttpStatus {
       return HttpStatus.BAD_REQUEST;
     case 'WOMPI_API_ERROR':
       return HttpStatus.BAD_GATEWAY;
+    case 'DELIVERY_NOT_FOUND':
+      return HttpStatus.NOT_FOUND;
+    case 'DELIVERY_ALREADY_EXISTS':
+      return HttpStatus.CONFLICT;
+    case 'INVALID_DELIVERY_STATUS':
+      return HttpStatus.BAD_REQUEST;
     default:
       return HttpStatus.INTERNAL_SERVER_ERROR;
   }
