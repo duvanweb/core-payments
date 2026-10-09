@@ -23,7 +23,7 @@ interface TransactionResponse {
   customerId: string | null;
 }
 
-const EVENTS_SECRET = 'events_test_xxx';
+const EVENTS_SECRET = process.env.WOMPI_EVENTS_SECRET ?? 'stagtest_events_xxx';
 
 const validCustomer = {
   email: 'cliente@example.com',
@@ -98,7 +98,7 @@ describe('Transactions (e2e)', () => {
       const body = response.body as CreateTransactionResponse;
       expect(body.transactionId).toBeDefined();
       expect(body.reference).toBeDefined();
-      expect(body.checkoutUrl).toContain('checkout.wompi.co');
+      expect(body.checkoutUrl).toContain('checkout.co.uat.wompi.dev');
     });
 
     it('→ 404 when product does not exist', async () => {
