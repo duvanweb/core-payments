@@ -47,6 +47,7 @@ describe('Transactions (e2e)', () => {
 
   beforeAll(async () => {
     prisma = new PrismaClient();
+    await prisma.delivery.deleteMany();
     await prisma.transaction.deleteMany();
     await prisma.customer.deleteMany();
     await prisma.product.deleteMany();
@@ -73,6 +74,7 @@ describe('Transactions (e2e)', () => {
   });
 
   afterAll(async () => {
+    await prisma.delivery.deleteMany();
     await prisma.transaction.deleteMany();
     await prisma.customer.deleteMany();
     await prisma.product.deleteMany();

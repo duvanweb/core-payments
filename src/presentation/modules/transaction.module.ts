@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PRISMA_SERVICE, PrismaService } from '@infrastructure/postgres/prisma.service';
 import {
@@ -25,9 +25,14 @@ import { GetTransactionUseCase } from '@application/use-cases/transaction/get-tr
 import { TransactionController } from '@presentation/controllers/transaction.controller';
 import { WebhookController } from '@presentation/controllers/webhook.controller';
 import { ProductModule } from '@presentation/modules/product.module';
+import { DeliveryModule } from '@presentation/modules/delivery.module';
+import {
+  CREATE_DELIVERY_USE_CASE,
+  CreateDeliveryUseCasePort,
+} from '@application/ports/use-cases/create-delivery.use-case.port';
 
 @Module({
-  imports: [ProductModule],
+  imports: [ProductModule, forwardRef(() => DeliveryModule)],
   controllers: [TransactionController, WebhookController],
   providers: [
     {
@@ -68,9 +73,11 @@ import { ProductModule } from '@presentation/modules/product.module';
     },
     {
       provide: HANDLE_WOMPI_WEBHOOK_USE_CASE,
-      useFactory: (txRepo: TransactionRepositoryPort) =>
-        new HandleWompiWebhookUseCase(txRepo),
-      inject: [TRANSACTION_REPOSITORY],
+      useFactory: (
+        txRepo: TransactionRepositoryPort,
+        createDelivery: CreateDeliveryUseCasePort,
+      ) => new HandleWompiWebhookUseCase(txRepo, createDelivery),
+      inject: [TRANSACTION_REPOSITORY, CREATE_DELIVERY_USE_CASE],
     },
     {
       provide: GET_TRANSACTION_USE_CASE,
@@ -79,5 +86,6 @@ import { ProductModule } from '@presentation/modules/product.module';
       inject: [TRANSACTION_REPOSITORY],
     },
   ],
+  exports: [TRANSACTION_REPOSITORY],
 })
 export class TransactionModule {}
