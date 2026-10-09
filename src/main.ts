@@ -12,6 +12,15 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.enableShutdownHooks();
 
+  app.enableCors({
+    origin: (process.env.CORS_ORIGINS ?? 'https://front-pyments.onrender.com')
+      .split(',')
+      .map((o) => o.trim())
+      .filter(Boolean),
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+
   const config = new DocumentBuilder()
     .setTitle('core-payments API')
     .setDescription('Product catalog API')
