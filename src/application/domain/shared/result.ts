@@ -13,11 +13,11 @@ export class Ok<T> {
     return this._value;
   }
 
-  isOk(): this is Ok<T> {
+  isOk(): boolean {
     return true;
   }
 
-  isErr(): this is Err<never> {
+  isErr(): boolean {
     return false;
   }
 
@@ -58,11 +58,11 @@ export class Err<E> {
     return this._error;
   }
 
-  isOk(): this is Ok<never> {
+  isOk(): boolean {
     return false;
   }
 
-  isErr(): this is Err<E> {
+  isErr(): boolean {
     return true;
   }
 

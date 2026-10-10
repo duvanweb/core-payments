@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { CheckHealthUseCase } from './check-health.use-case';
 
 describe('CheckHealthUseCase', () => {
