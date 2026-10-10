@@ -4,8 +4,26 @@ const config = {
   rootDir: '.',
   testRegex: '.*\\.spec\\.ts$',
   transform: {
-    '^.+\\.(t|j)s$': 'ts-jest',
+    '^.+\\.(t|j)s$': ['@swc/jest', {
+      jsc: {
+        target: 'es2023',
+        parser: {
+          syntax: 'typescript',
+          decorators: true,
+        },
+        transform: {
+          legacyDecorator: true,
+          decoratorMetadata: true,
+        },
+      },
+      module: {
+        type: 'commonjs',
+      },
+    }],
   },
+  transformIgnorePatterns: [
+    'node_modules/(?!.*@nestjs)',
+  ],
   collectCoverageFrom: [
     'src/**/*.ts',
     '!src/**/*.spec.ts',
