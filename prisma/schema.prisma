@@ -1,0 +1,70 @@
+// Prisma schema for core-payments.
+// Datasource and generator are wired; the first business model will be added here.
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  price       Decimal  @db.Decimal(10, 2)
+  image       String
+  stock       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  transactions Transaction[]
+}
+
+model Customer {
+  id                String   @id @default(uuid())
+  email             String
+  fullName          String
+  phoneNumber       String
+  phoneNumberPrefix String
+  legalId           String?
+  legalIdType       String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  transactions     Transaction[]
+}
+
+model Transaction {
+  id                 String   @id @default(uuid())
+  productId          String
+  product            Product   @relation(fields: [productId], references: [id])
+  customerId         String?
+  customer           Customer? @relation(fields: [customerId], references: [id])
+  quantity           Int
+  unitPriceInCents   Int
+  baseFeeInCents     Int
+  shippingFeeInCents Int
+  totalAmountInCents Int
+  currency           String   @default("COP")
+  status             String   @default("PENDING")
+  wompiTransactionId String?
+  reference          String   @unique
+  productData        Json
+  customerData       Json
+  shippingAddress    Json
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  delivery           Delivery?
+}
+
+model Delivery {
+  id             String   @id @default(uuid())
+  transactionId  String   @unique
+  transaction    Transaction @relation(fields: [transactionId], references: [id])
+  status         String   @default("PENDING")
+  carrier        String?
+  trackingNumber String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
